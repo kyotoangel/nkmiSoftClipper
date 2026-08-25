@@ -148,6 +148,10 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
+
+        for (int sample; sample < buffer.getNumSamples(); sample++) {
+            channelData[sample] = fonctionprocess(channelData[sample]); // cas d'utilisation typique
+        }
         juce::ignoreUnused (channelData);
         // ..do something to the data...
     }
