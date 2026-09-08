@@ -150,17 +150,27 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
 
+    juce::dsp::AudioBlock<float> block (buffer);
+
+    // oversampling before hyperbolic tangent processing (soft-clipping)
+
+    auto oversampledBlock = oversampling.processSamplesUp(block);
+
     float preGain = std::pow(10.0f, preGainParam->load()/20.0f); // Amplitude gain using dB
 
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    for (int channel = 0; channel < oversampledBlock.getNumChannels(); ++channel)
     {
-        auto* channelData = buffer.getWritePointer (channel);
+        auto* channelData = oversampledBlock.getChannelPointer (channel);
 
-        for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
-            channelData[sample] = std::tanh(channelData[sample] * preGain); // core operation of the soft clipper (+turning dB into gain)
+        for (int sample_oversampled = 0; sample_oversampled < oversampledBlock.getNumSamples(); sample_oversampled++)
+        {
+            channelData[sample_oversampled] = std::tanh(channelData[sample_oversampled]  * preGain);
         }
-        juce::ignoreUnused (channelData);
+
     }
+
+    oversampling.processSamplesDown(block); // downsample et réécrit directement dans le buffer interne (pointeur)
+
 }
 
 //==============================================================================
