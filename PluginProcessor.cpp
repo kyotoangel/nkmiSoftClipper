@@ -13,12 +13,12 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
                      #endif
                        ), parameters(*this, nullptr, "parameters", createParameterLayout())
 {
-
+    preGainParam = parameters.getRawParameterValue ("preGain");
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
 {
-}s
+}
 //==============================================================================
 const juce::String AudioPluginAudioProcessor::getName() const
 {
@@ -146,15 +146,17 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
+
+    float preGain = std::pow(10.0f, preGainParam->load()/20.0f); // Amplitude gain using dB
+
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer (channel);
 
         for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
-            channelData[sample] = tanh(channelData[sample]);
+            channelData[sample] = std::tanh(channelData[sample] * preGain); // core operation of the soft clipper (+turning dB into gain)
         }
         juce::ignoreUnused (channelData);
-        // ..do something to the data...
     }
 }
 

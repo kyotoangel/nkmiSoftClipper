@@ -46,6 +46,9 @@ public:
 
     juce::AudioProcessorValueTreeState parameters;
 
+    std::atomic<float>* preGainParam = nullptr;
+
+
 private:
     //==============================================================================
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
