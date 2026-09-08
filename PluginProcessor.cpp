@@ -1,5 +1,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include <math.h>
 
 //==============================================================================
 AudioPluginAudioProcessor::AudioPluginAudioProcessor()
@@ -10,14 +11,14 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), parameters(*this, nullptr, "parameters", createParameterLayout())
 {
+
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
 {
-}
-
+}s
 //==============================================================================
 const juce::String AudioPluginAudioProcessor::getName() const
 {
@@ -149,8 +150,8 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     {
         auto* channelData = buffer.getWritePointer (channel);
 
-        for (int sample; sample < buffer.getNumSamples(); sample++) {
-            channelData[sample] = fonctionprocess(channelData[sample]); // cas d'utilisation typique
+        for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
+            channelData[sample] = tanh(channelData[sample]);
         }
         juce::ignoreUnused (channelData);
         // ..do something to the data...
@@ -189,4 +190,16 @@ void AudioPluginAudioProcessor::setStateInformation (const void* data, int sizeI
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new AudioPluginAudioProcessor();
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::createParameterLayout() {
+    return
+    {
+        std::make_unique<juce::AudioParameterFloat> (
+        juce::ParameterID{"preGain"},
+        "preGain",
+        -36.0f,
+        36.0f,
+        0.0f)
+    };
 }

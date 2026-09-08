@@ -2,17 +2,25 @@
 #include "PluginEditor.h"
 
 //==============================================================================
+
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor& p)
-    : AudioProcessorEditor (&p), processorRef (p)
+    : AudioProcessorEditor (&p), processorRef (p), preGainSliderAttachment(processorRef.getState(), "preGain", preGain)
 {
     juce::ignoreUnused (processorRef);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (300, 200);
+
+    preGain.setValue(0.0f);
+    preGain.setSliderStyle (juce::Slider::SliderStyle::Rotary);
+    preGain.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50,20);
+    addAndMakeVisible(preGain);
 }
+
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
 {
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================
@@ -23,11 +31,9 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
 }
 
 void AudioPluginAudioProcessorEditor::resized()
 {
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
+    preGain.setBounds(getLocalBounds().reduced(20));
 }
