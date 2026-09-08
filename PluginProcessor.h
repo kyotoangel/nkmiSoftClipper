@@ -48,6 +48,13 @@ public:
 
     std::atomic<float>* preGainParam = nullptr;
 
+    juce::dsp::Oversampling<float> oversampling {
+        2, // number of channels
+        4, // oversampling factor (4x), we can make it a variable later so the user be able to choose the factor from UI
+        juce::dsp::Oversampling<float>::filterHalfBandFIREquiripple, // when we write :: we will see the proposed filters
+        true, // max quality
+        false // integer latency off
+    };
 
 private:
     //==============================================================================
