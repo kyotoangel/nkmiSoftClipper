@@ -24,6 +24,13 @@ project(nkmiSoftClipper VERSION 0.0.1)
 # find_package(JUCE CONFIG REQUIRED)        # If you've installed JUCE to your system
 # or
 add_subdirectory("/Users/nokami/Documents/Projets Code/JUCE" JUCE)                    # If you've put JUCE in a subdirectory called JUCE
+include(FetchContent)
+FetchContent_Declare(
+        JUCE
+        GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+        GIT_TAG 9.0.1
+)
+FetchContent_MakeAvailable(JUCE)
 
 # If you are building a VST2, CMake needs to be told where to find the SDK on your
 # system. This setup should be done before calling `juce_add_plugin`.
