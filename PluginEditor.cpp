@@ -11,7 +11,6 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     // editor's size to whatever you need it to be.
     setSize (300, 200);
 
-    preGain.setValue(0.0f);
     preGain.setSliderStyle (juce::Slider::SliderStyle::Rotary);
     preGain.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50,20);
     addAndMakeVisible(preGain);
