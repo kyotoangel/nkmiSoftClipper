@@ -14,6 +14,7 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
                        ), parameters(*this, nullptr, "parameters", createParameterLayout())
 {
     preGainParam = parameters.getRawParameterValue ("preGain");
+    outputGainParam = parameters.getRawParameterValue ("outputGain");
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -157,6 +158,7 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     auto oversampledBlock = oversampling.processSamplesUp(block);
 
     float preGain = std::pow(10.0f, preGainParam->load()/20.0f); // Amplitude gain using dB
+    float outputGain = std::pow(10.0f, outputGainParam->load()/20.0f); // gain de sortie
 
     for (int channel = 0; channel < oversampledBlock.getNumChannels(); ++channel)
     {
@@ -164,7 +166,7 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 
         for (int sample_oversampled = 0; sample_oversampled < oversampledBlock.getNumSamples(); sample_oversampled++)
         {
-            channelData[sample_oversampled] = std::tanh(channelData[sample_oversampled]  * preGain);
+            channelData[sample_oversampled] = std::tanh(channelData[sample_oversampled]  * preGain) * outputGain;
         }
 
     }
@@ -215,6 +217,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
         "preGain",
         -36.0f,
         36.0f,
+        0.0f),
+
+        std::make_unique<juce::AudioParameterFloat> (
+        juce::ParameterID{"outputGain"},
+        "outputGain",
+        -36.0f,
+        36.0f,
         0.0f)
-    };
+        };
 }

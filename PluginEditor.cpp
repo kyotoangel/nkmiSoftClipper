@@ -4,18 +4,22 @@
 //==============================================================================
 
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor& p)
-    : AudioProcessorEditor (&p), processorRef (p), preGainSliderAttachment(processorRef.getState(), "preGain", preGain)
+    : AudioProcessorEditor (&p), processorRef (p), preGainSliderAttachment(processorRef.getState(), "preGain", preGain),
+postGainSliderAttachment(processorRef.getState(), "outputGain", outputGain)
 {
     juce::ignoreUnused (processorRef);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (300, 200);
 
-    preGain.setSliderStyle (juce::Slider::SliderStyle::Rotary);
-    preGain.setTextBoxStyle(juce::Slider::TextBoxBelow, true, 50,20);
+    preGain.setSliderStyle (juce::Slider::SliderStyle::LinearHorizontal);
+    preGain.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50,20);
     addAndMakeVisible(preGain);
-}
 
+    outputGain.setSliderStyle(juce::Slider::LinearHorizontal);
+    outputGain.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50,20);
+    addAndMakeVisible(outputGain);
+}
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
 {
@@ -34,5 +38,8 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 
 void AudioPluginAudioProcessorEditor::resized()
 {
-    preGain.setBounds(getLocalBounds().reduced(20));
+    auto area = getLocalBounds();
+    auto headerFooterHeight = 36;
+    preGain.setBounds(area.removeFromBottom(headerFooterHeight));
+    outputGain.setBounds(area.removeFromBottom(headerFooterHeight));
 }

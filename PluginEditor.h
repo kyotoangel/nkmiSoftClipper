@@ -19,8 +19,10 @@ private:
     AudioPluginAudioProcessor& processorRef;
 
     juce::Slider preGain;
+    juce::Slider outputGain;
 
     juce::AudioProcessorValueTreeState::SliderAttachment preGainSliderAttachment;
+    juce::AudioProcessorValueTreeState::SliderAttachment postGainSliderAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
 };
