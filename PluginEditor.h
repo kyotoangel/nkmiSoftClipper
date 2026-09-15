@@ -23,6 +23,10 @@ private:
 
     juce::AudioProcessorValueTreeState::SliderAttachment preGainSliderAttachment;
     juce::AudioProcessorValueTreeState::SliderAttachment postGainSliderAttachment;
+    juce::ComboBox oversamplingComboBox;
+
+    juce::AudioParameterChoice* oversamplingParam = nullptr;
+    juce::AudioProcessorValueTreeState::ComboBoxAttachment oversamplingAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
 };

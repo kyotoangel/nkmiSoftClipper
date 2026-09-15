@@ -210,6 +210,7 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::createParameterLayout() {
+
     return
     {
         std::make_unique<juce::AudioParameterFloat> (
@@ -224,6 +225,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
         "outputGain",
         -36.0f,
         36.0f,
-        0.0f)
+        0.0f),
+
+        std::make_unique<juce::AudioParameterChoice>(
+        "oversampling", // parameter ID
+        "Oversampling", // nom affiché
+        juce::StringArray {"x1", "x2", "x4"},
+        0
+        )
         };
 }
