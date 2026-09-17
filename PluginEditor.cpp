@@ -12,16 +12,18 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     juce::ignoreUnused (processorRef);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (300, 200);
+    setSize (200, 160);
 
     // Sliders de Pre-Gain et Post-Gain
 
     preGain.setSliderStyle (juce::Slider::SliderStyle::LinearHorizontal);
     preGain.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50,20);
+    preGain.setTextValueSuffix(" dB");
     addAndMakeVisible(preGain);
 
     outputGain.setSliderStyle(juce::Slider::LinearHorizontal);
     outputGain.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50,20);
+    outputGain.setTextValueSuffix(" dB");
     addAndMakeVisible(outputGain);
 
     // ComboBox (oversampling)
@@ -34,6 +36,14 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     oversamplingComboBox.addItem("x4", 3);
 
     oversamplingComboBox.setSelectedItemIndex(oversamplingParam->getIndex(), juce::dontSendNotification);
+
+    // --- Labels
+
+    addAndMakeVisible (preGainLabel);
+    addAndMakeVisible(postGainLabel);
+    addAndMakeVisible (oversamplingLabel);
+
+    preGainLabel.attachToComponent (&preGain, true);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -53,8 +63,9 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 
 void AudioPluginAudioProcessorEditor::resized()
 {
-    auto area = getLocalBounds();
-    auto headerFooterHeight = 36;
-    preGain.setBounds(area.removeFromBottom(headerFooterHeight));
-    outputGain.setBounds(area.removeFromBottom(headerFooterHeight));
+    const int marge_x = 10;
+    const int marge_y = 20;
+    preGain.setBounds(marge_x, marge_y, getWidth() - 2 * marge_x , marge_y * 2);
+    outputGain.setBounds(marge_x, marge_y * 3, getWidth() - 2 * marge_x, marge_y * 2);
+    oversamplingComboBox.setBounds(getWidth() - 50, getHeight()-30, 40, 20);
 }

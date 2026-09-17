@@ -28,5 +28,9 @@ private:
     juce::AudioParameterChoice* oversamplingParam = nullptr;
     juce::AudioProcessorValueTreeState::ComboBoxAttachment oversamplingAttachment;
 
+    juce::Label preGainLabel;
+    juce::Label postGainLabel;
+    juce::Label oversamplingLabel;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
 };
