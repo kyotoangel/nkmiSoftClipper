@@ -6,8 +6,7 @@ This project is my first real attempt at making a Juce VST, I wanted to start si
 
 I have difficulties understanding how JUCE labels works so the first slider is the "preGain" value, affecting the signal entering the soft clipper (hyperbolic tangent function), the second sliders is postGain (to correct the signal exiting the soft clipper), and there's a combo box to choose the oversampling value (n=1,2 or 4, with the oversampling value being 2^n).
 
-<img width="205" height="243" alt="スクリーンショット 2026-09-21 15 27 18" src="https://github.com/user-attachments/assets/3312aa68-872c-4d7f-af0b-dd7c0650cbeb" />
-
+<img width="208" height="247" alt="スクリーンショット 2026-09-21 15 27 55" src="https://github.com/user-attachments/assets/8f2837b1-3f4f-40e5-94b8-34758b386943" />
 
 # Implemented
 
